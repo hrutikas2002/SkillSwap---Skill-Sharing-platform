@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-5">
+        <div class="card border-0 shadow-lg">
+            <div class="card-header bg-danger text-white py-3">
+                <h5 class="card-title mb-0 d-flex align-items-center">
+                    <i class="bi bi-calendar-x-fill me-2"></i> Cancel Scheduled Session
+                </h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="alert alert-warning border-0 bg-warning bg-opacity-10 mb-4">
+                    <h6 class="fw-bold mb-2">Session Details:</h6>
+                    <div class="ps-2">
+                        <p class="mb-1"><strong>Skill:</strong> {{ session.skill }}</p>
+                        <p class="mb-0"><strong>Scheduled for:</strong> {{ session.date_time|date:"D, d M Y" }} @ {{ session.date_time|time:"H:i" }}</p>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="reason" class="form-label fw-bold">Reason for cancellation</label>
+                        <textarea 
+                            name="reason" 
+                            id="reason"
+                            class="form-control" 
+                            rows="4" 
+                            placeholder="Please provide a brief reason for the other person..." 
+                            required></textarea>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg shadow-sm">
+                            <i class="bi bi-trash-fill me-2"></i>Confirm Cancellation
+                        </button>
+                        <a href="javascript:history.back()" class="btn btn-light border">
+                            Go Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                Changed your mind? <a href="javascript:history.back()" class="text-decoration-none">Return to session list</a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}

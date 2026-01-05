@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-5">
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 small">
+            <li class="breadcrumb-item active">
+                Write Review
+            </li>
+        </ol>
+    </nav>
+
+    <a href="{% url 'dashboard' %}"
+       class="btn btn-outline-secondary rounded-circle"
+       title="Go to Dashboard">
+        <i class="bi bi-house-fill"></i>
+    </a>
+
+</div>
+
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-warning text-dark py-3 border-0">
+                <h5 class="card-title mb-0 d-flex align-items-center fw-bold">
+                    <i class="bi bi-star-fill me-2"></i> Share Your Experience
+                </h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <p class="text-muted small mb-1 text-uppercase fw-bold">Reviewing Teacher</p>
+                    <h4 class="fw-bold">
+                        {% if session.teacher.first_name %}
+                            {{ session.teacher.first_name }} {{ session.teacher.last_name }}
+                        {% else %}
+                            {{ session.teacher.username }}
+                        {% endif %}
+                    </h4>
+                    <span class="badge bg-light text-dark border">Skill: {{ session.skill }}</span>
+                </div>
+
+                <hr class="my-4 opacity-25">
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="review-form">
+                        {{ form|crispy }}
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-warning btn-lg fw-bold shadow-sm">
+                            Submit My Review
+                        </button>
+                        <a href="{% url 'my_sessions' %}" class="btn btn-link text-muted text-decoration-none small">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="mt-4 text-center">
+            <p class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i> 
+                Your honest feedback helps other students find the best mentors!
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Makes the review card slightly warmer to match the star-rating theme */
+    .card-header.bg-warning {
+        background: linear-gradient(45deg, #ffca2c, #ffcd39);
+    }
+    .review-form label {
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .review-form textarea {
+        min-height: 120px;
+    }
+</style>
+{% endblock %}

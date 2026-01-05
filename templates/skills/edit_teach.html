@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-5">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item active" aria-current="page">
+                Edit Teaching Skill
+            </li>
+        </ol>
+    </nav>
+
+    <a href="{% url 'dashboard' %}"
+       class="btn btn-outline-secondary rounded-circle"
+       title="Go to Dashboard">
+        <i class="bi bi-house-fill"></i>
+    </a>
+
+</div>
+
+
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="card-title mb-0 d-flex align-items-center">
+                    <i class="bi bi-mortarboard-fill me-2"></i> Update Teaching Skill
+                </h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <p class="text-muted small mb-4">
+                    Modify your experience level or skill name to attract more learners to your sessions.
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form|crispy }}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="bi bi-check-lg me-1"></i> Update Skill
+                        </button>
+                        <a href="{% url 'select_skills' %}" class="btn btn-outline-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

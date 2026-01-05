@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="fw-bold"><i class="bi bi-inbox-fill text-primary me-2"></i>Incoming Session Requests</h2>
+        <p class="text-muted">Other members are excited to learn from you! Review their requests below.</p>
+    </div>
+
+    <div class="col-auto">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary rounded-circle" title="Go to Dashboard">
+            <i class="bi bi-house-fill"></i>
+        </a>
+    </div>
+</div>
+
+{% if requests %}
+<div class="row g-3">
+  {% for r in requests %}
+    <div class="col-12">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div class="row align-items-center">
+            
+            <div class="col-md-5">
+              <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                  <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 45px; height: 45px;">
+                    {{ r.learner.first_name|slice:":1" }}{{ r.learner.last_name|slice:":1" }}
+                  </div>
+                </div>
+                <div class="ms-3">
+                  <h6 class="mb-0 fw-bold">{{ r.learner.first_name }} {{ r.learner.last_name }}</h6>
+                  <p class="text-muted small mb-0">wants to learn <span class="text-primary fw-semibold">{{ r.skill }}</span></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 text-md-center my-3 my-md-0">
+              <a href="{% url 'view_teacher_profile' r.learner.id %}" class="btn btn-sm btn-outline-info rounded-pill px-3">
+                <i class="bi bi-person-circle"></i> View Profile
+              </a>
+            </div>
+
+            <div class="col-md-4 text-md-end">
+              <div class="d-flex justify-content-md-end gap-2">
+                <a href="{% url 'schedule_session' r.id %}" class="btn btn-success px-4 rounded-pill">
+                  <i class="bi bi-calendar-check me-1"></i> Accept & Schedule
+                </a>
+                <a href="{% url 'reject_request' r.id %}" class="btn btn-outline-danger px-3 rounded-pill">
+                  <i class="bi bi-x-lg"></i>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div class="card border-0 shadow-sm mt-4">
+    <div class="card-body text-center py-5">
+        <div class="mb-3 text-muted">
+            <i class="bi bi-mailbox" style="font-size: 3rem;"></i>
+        </div>
+        <h4 class="text-secondary">Your inbox is quiet</h4>
+        <p class="text-muted">You don't have any pending requests at the moment. Make sure your skills are up to date!</p>
+        <a href="{% url 'select_skills' %}" class="btn btn-primary px-4">Update My Skills</a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

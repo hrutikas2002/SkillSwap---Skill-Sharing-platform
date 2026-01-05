@@ -1,0 +1,109 @@
+{% extends "base.html" %} {% block content %}
+<div class="row mb-4">
+  <div class="col">
+    <h2 class="fw-bold">Welcome back, {{ request.user.first_name }} {{ request.user.last_name }}!</h2>
+    <p class="text-muted">What would you like to do today?</p>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-md-6 col-lg-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+            <i class="bi bi-person-badge text-primary fs-4"></i>
+          </div>
+          <h5 class="card-title mb-0">Identity</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <div class="list-group list-group-flush">
+            {% if profile_incomplete %}
+            <div class="alert alert-warning p-2 mb-2 small rounded-3">
+              <i class="bi bi-exclamation-triangle-fill me-1"></i>
+              Complete your profile to get better matches!
+              <a href="{% url 'edit_profile' %}" class="fw-semibold ms-1"
+                >Complete now</a
+              >
+            </div>
+            {% endif %}
+
+            <a
+              href="{% url 'edit_profile' %}"
+              class="list-group-item list-group-item-action border-0 px-0"
+            >
+              <i class="bi bi-pencil-square me-2"></i> Update Profile
+            </a>
+
+            <a
+              href="{% url 'select_skills' %}"
+              class="list-group-item list-group-item-action border-0 px-0"
+            >
+              <i class="bi bi-mortarboard me-2"></i> Skills to Teach & Learn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-lg-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div
+        class="card-body text-center d-flex flex-column justify-content-center py-4"
+      >
+        <div class="mb-3">
+          <i class="bi bi-search text-success" style="font-size: 3rem"></i>
+        </div>
+        <h5 class="card-title">Start Learning With a Mentor</h5>
+        <p class="card-text text-muted small">
+          Connect with people who have the skills you need.
+        </p>
+        <a href="{% url 'matching' %}" class="btn btn-success w-100"
+          >Find Matching Teachers</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12 col-lg-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="bg-warning bg-opacity-10 p-3 rounded-3 me-3">
+            <i class="bi bi-calendar-event text-warning fs-4"></i>
+          </div>
+          <h5 class="card-title mb-0">My Schedule</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <a
+            href="{% url 'session_requests' %}"
+            class="list-group-item list-group-item-action border-0 px-0 d-flex justify-content-between align-items-center"
+          >
+            <span><i class="bi bi-inbox me-2"></i> Incoming Requests</span>
+            <span class="badge bg-secondary rounded-pill">View</span>
+          </a>
+          <a
+            href="{% url 'my_requests' %}"
+            class="list-group-item list-group-item-action border-0 px-0"
+          >
+            <i class="bi bi-send me-2"></i> Sent Requests
+          </a>
+          <a
+            href="{% url 'my_sessions' %}"
+            class="list-group-item list-group-item-action border-0 px-0 text-primary fw-semibold"
+          >
+            <i class="bi bi-play-circle me-2"></i> My Learning Sessions
+          </a>
+          <a
+            href="{% url 'teaching_sessions' %}"
+            class="list-group-item list-group-item-action border-0 px-0 text-success fw-semibold"
+          >
+            <i class="bi bi-person-video3 me-2"></i> Sessions I’m Teaching
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

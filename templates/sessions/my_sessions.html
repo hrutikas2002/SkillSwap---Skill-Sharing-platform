@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2 class="fw-bold"><i class="bi bi-calendar-event text-primary me-2"></i>My Learning Sessions</h2>
+        <p class="text-muted">Manage your upcoming classes and review your completed learning history.</p>
+    </div>
+
+    <div class="col-auto">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary rounded-circle" title="Go to Dashboard">
+            <i class="bi bi-house-fill"></i>
+        </a>
+    </div>
+</div>
+
+{% if sessions %}
+<div class="row g-4">
+    {% for s in sessions %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-header bg-white border-0 pt-3 d-flex justify-content-between align-items-center">
+                <span class="badge {% if s.status == 'SCHEDULED' %}bg-success{% elif s.status == 'COMPLETED' %}bg-secondary{% else %}bg-danger{% endif %} rounded-pill px-3">
+                    {{ s.status }}
+                </span>
+                <small class="text-muted"><i class="bi bi-tag-fill me-1"></i>{{ s.skill }}</small>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-1">Date & Time</h6>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock text-primary me-2 fs-5"></i>
+                        <span class="fw-semibold">{{ s.date_time|date:"D, d M Y" }} @ {{ s.date_time|time:"H:i" }}</span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-1">Teacher</h6>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-person-video3 text-primary me-2 fs-5"></i>
+                        <span>
+                            {% if s.teacher.first_name %}
+                                {{ s.teacher.first_name }} {{ s.teacher.last_name }}
+                            {% else %}
+                                {{ s.teacher.username }}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                {% if s.status == "CANCELLED" %}
+                <div class="alert alert-danger py-2 px-3 small mt-2">
+                    <i class="bi bi-x-octagon-fill me-1"></i>
+                    <strong>Cancelled by {{ s.cancelled_by|title }}</strong><br>
+                    Reason: {{ s.cancel_reason }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card-footer bg-white border-0 pb-4">
+                <div class="d-grid gap-2">
+                    {% if s.status == "SCHEDULED" %}
+                        <a href="{{ s.meet_link }}" target="_blank" class="btn btn-success shadow-sm">
+                            <i class="bi bi-camera-video-fill me-2"></i>Join Google Meet
+                        </a>
+                        <a href="{% url 'cancel_session_learner' s.id %}" class="btn btn-outline-danger btn-sm border-0 text-decoration-underline">
+                            Cancel Session
+                        </a>
+                    {% endif %}
+
+                    {% if s.status == "COMPLETED" and not s.review %}
+                        <a href="{% url 'add_review' s.id %}" class="btn btn-warning">
+                            <i class="bi bi-star-fill me-2"></i>Leave a Review
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% else %}
+<div class="text-center py-5 bg-white rounded shadow-sm border mt-4">
+    <i class="bi bi-calendar-x text-muted" style="font-size: 3.5rem;"></i>
+    <h4 class="mt-3 text-secondary">No sessions found</h4>
+    <p class="text-muted">You haven't scheduled any sessions yet.</p>
+    <a href="{% url 'my_requests' %}" class="btn btn-primary px-4">Check My Requests</a>
+</div>
+{% endif %}
+
+{% endblock %}

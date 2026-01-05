@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-danger text-white py-3">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> Reject Session Request
+                </h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="alert alert-light border mb-4">
+                    <p class="mb-1 text-muted small text-uppercase fw-bold">Request Details</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="d-block fw-bold">{{ match.learner.first_name }} {{ match.learner.last_name }}</span>
+                            <span class="text-secondary small">Skill: {{ match.skill }}</span>
+                        </div>
+                        <i class="bi bi-person-x fs-3 text-danger opacity-50"></i>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="reason" class="form-label fw-semibold">Reason for rejection</label>
+                        <textarea 
+                            name="reason" 
+                            id="reason"
+                            class="form-control" 
+                            rows="4" 
+                            placeholder="e.g., I'm currently unavailable this week..." 
+                            required></textarea>
+                        <div class="form-text">Your reason will be shared with the learner to help them understand.</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-danger btn-lg">
+                            Confirm Rejection
+                        </button>
+                        <a href="{% url 'session_requests' %}" class="btn btn-light">
+                            Cancel and Go Back
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <p class="text-center text-muted mt-4 small">
+            Need to reschedule instead? 
+            <a href="{% url 'session_requests' %}" class="text-decoration-none">Go back to requests</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
